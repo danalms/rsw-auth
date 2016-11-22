@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: auth-server
+  name: rsw-auth
 # deployment/replication controller spec
 # running only one instance of the auth server to avoid needing a persistent store when NOT using JWT
 spec:
@@ -10,14 +10,14 @@ spec:
   template:
     metadata:
       labels:
-        app: auth-server
+        app: rsw-auth
         role: auth
         tier: backend
 # pod spec
     spec:
       containers:
-      - name: auth-server
-        image: gcr.io/inspired-nomad-149920/auth-server-demo:v1
+      - name: rsw-auth
+        image: gcr.io/inspired-nomad-149920/rsw-auth:v1
         imagePullPolicy: Always
         resources:
           requests:

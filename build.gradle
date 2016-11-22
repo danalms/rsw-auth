@@ -16,8 +16,8 @@ apply plugin: 'spring-boot'
 apply plugin: 'docker'
 
 jar {
-	baseName = 'auth-server'
-	version = '0.0.1-SNAPSHOT'
+	baseName = 'rsw-auth'
+	version = '0.0.1'
 }
 
 sourceCompatibility = 1.8
@@ -33,7 +33,7 @@ docker {
 
 task buildDocker(type: Docker, dependsOn: build) {
     push = false
-    tag = "gcr.io/inspired-nomad-149920/auth-server-demo"
+    tag = "gcr.io/inspired-nomad-149920/rsw-auth"
     tagVersion = "v1"
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {

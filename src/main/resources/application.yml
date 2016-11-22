@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: auth-server
+    name: rsw-auth
 
 gateway:
   demo:

@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-server
+  name: rsw-auth
   labels:
-    app: auth-server
+    app: rsw-auth
     role: auth
     tier: backend
 spec:
@@ -12,6 +12,6 @@ spec:
   - port: 80
     targetPort: 9000
   selector:
-    app: auth-server
+    app: rsw-auth
     role: auth
     tier: backend
