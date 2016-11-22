@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: auth-server
+# deployment/replication controller spec
+# running only one instance of the auth server to avoid needing a persistent store when NOT using JWT
+spec:
+  replicas: 1
+# pod template
+  template:
+    metadata:
+      labels:
+        app: auth-server
+        role: auth
+        tier: backend
+# pod spec
+    spec:
+      containers:
+      - name: auth-server
+        image: gcr.io/inspired-nomad-149920/auth-server-demo:v1
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 250m
+            memory: 1024M
+        ports:
+        - containerPort: 9000

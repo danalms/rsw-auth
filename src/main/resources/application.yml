@@ -1,0 +1,36 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: auth-server
+
+gateway:
+  demo:
+    tokenType: oauth2
+#    tokenType: jwt
+
+logging:
+  level:
+    org.springframework.security: info
+
+security:
+  oauth2:
+    client:
+      client-id: rsw
+      client-secret: rswsecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+      authorized-grant-types: implicit,authorization_code,client_credentials
+#      authorized-grant-types: implicit
+  basic:
+    enabled: false
+  sessions: stateless
+  user:
+    password: password
+
+rsw:
+  security:
+    jwt:
+      signingKey: abracadabra
+
