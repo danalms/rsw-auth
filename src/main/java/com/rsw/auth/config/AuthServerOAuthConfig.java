@@ -12,9 +12,11 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 
 /**
  * Created by DAlms on 10/16/16.
- * Minimal configuration to provide OAuth tokens to clients upon request and have the flexibility of
- * more configuration, e.g. grant types, scopes, etc.
- * (most but not all of the oauth2.client properties are actually used internally)
+ *
+ * Example of Java configuration to provide more flexibility for configuring the Auth Server capabilities and
+ * security.
+ * Note that the oauth2.client properties set in the application.yml do take effect without this class, so
+ * for simpler implementations, this class may not be necessary.
  *
  */
 @Configuration
@@ -25,21 +27,24 @@ public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter 
     private AuthenticationManager authenticationManager;
 
     /**
-     * this is important: defines access the /oauth/token and check_access endpoints which default to denyAll()
-     *   (in this example it's more restrictive and requires an authority)
+     * The tokenKeyAccess permission (TokenKeyEndpoint) probably isn't pertinent for oauth2 tokens - only
+     * JWTs which use a protected key for signing.  This is the /oauth/token_key endpoint.
+     * The checkTokenAccess permission (CheckTokenEndpoint) MAY be pertinent to both oauth2 and Jwt types of tokens,
+     * whenever the client wants to validate the token using /oauth/check_token endpoint.
+     *
      * @param oauthServer
      * @throws Exception
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer
-                .tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_TRUSTED_CLIENT')")
-                .checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
+//        oauthServer
+//                .tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_TRUSTED_CLIENT')")
+//                .checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
     }
 
     /**
      * By extending AuthorizationServerConfigurerAdapter, we must explicitly assert configuration that
-     * otherwise is the default.
+     * otherwise is left to default.
      *
      * @param endpoints
      * @throws Exception
@@ -51,11 +56,13 @@ public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter 
     }
 
     /**
-     *  the authorities defined here are implicitly assigned upon successful auth; these authorities are submitted
-     *  to the AuthorizationServerSecurityConfigurer.configure() security definitions above if the matchers are set
-     *  up to be restrictive to the authorities.
-     *  These are separate from the authorities assigned by the auth manager.
-     *  When user/password grant flow is used, the authorities usage may be different (?)
+     *  Note that the authorities defined here are implicitly assigned upon successful auth for the grant
+     *  (and for the client_credentials direct token request)
+     *  In the AuthorizationServerSecurityConfigurer.configure() security definitions above, if you so wish,
+     *  those endpoints can be protected based on the authorities assigned here.
+     *  Question: How do these authorities line up with the authorities assigned by a real UserDetails provider?
+     *  i.e. when real authentication and assigned authorities are in play?
+     *
      * @param clients
      * @throws Exception
      */
@@ -64,10 +71,10 @@ public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter 
         clients.inMemory()
                 .withClient("rsw")
                 .secret("rswsecret")
-                .authorizedGrantTypes("authorization_code,client_credentials,refresh_token")
-                .scopes("read", "write", "blue")
+                .authorizedGrantTypes("authorization_code","implicit","client_credentials","refresh_token")
+                .scopes("read", "write")
                 .autoApprove("read","write")
-                .authorities("ROLE_TRUSTED_CLIENT");
+                .authorities("ROLE_USER", "ROLE_DUMMY", "ROLE_TRUSTED_CLIENT");
     }
 
 }

@@ -23,10 +23,11 @@ import java.util.Map;
 
 /**
  * Created by DAlms on 10/16/16.
- * Minimal configuration to provide JWT tokens to clients upon request, along with a simple token enhancer example
  *
- * Note that here, the OAuth client settings are explicitly in the Java code, rather than from the
- * security.oauth2.client properties, i.e. the property file settings have no effect here
+ * Minimal configuration to provide JWT tokens to clients upon request, along with a simple token enhancer example
+ * For JWT tokens, the Java based config actually is necessary, unlike for Oauth2 tokens.
+ * Note that here, the OAuth client properties are explicitly in the Java code, rather than from the
+ * security.oauth2.client properties, i.e. the property file settings are overridden here.
  */
 @Configuration
 @ConditionalOnProperty(value = "gateway.demo.tokenType", havingValue = "jwt")
@@ -39,8 +40,10 @@ public class AuthServerJwtConfig extends AuthorizationServerConfigurerAdapter {
     private AuthenticationManager authenticationManager;
 
     /**
-     * this is important: defines access the /oauth/token and check_access endpoints which default to denyAll()
-     *   (in this example it's more restrictive and requires an authority)
+     * The tokenKeyAccess permission (TokenKeyEndpoint) probably isn't pertinent for oauth2 tokens - only
+     * JWTs which may use a protected key for signing (/oauth/token_key endpoint).
+     * The checkTokenAccess permission (CheckTokenEndpoint) MAY be pertinent to both oauth2 and Jwt types of tokens,
+     * whenever the client wants to validate the token using /oauth/check_token endpoint.
      * @param oauthServer
      * @throws Exception
      */
@@ -56,7 +59,7 @@ public class AuthServerJwtConfig extends AuthorizationServerConfigurerAdapter {
      * converters and enhancers in this configure() method.
      * The AuthorizationServerEndpointsConfigurer is where the TokenStore is created, and defaults to
      * JwtTokenStore if the AccessTokenConverter is an instance of JwtAccessTokenConverter.
-     * Alternatively the JwtTokenStore can be explicitly set, but its constructory requires a token enhancer.
+     * Alternatively the JwtTokenStore can be explicitly set, but its constructor requires a token enhancer.
      * However we wanted to expose and manipulate the token converter in this example, so chose to do it this way.
      *
      * By extending AuthorizationServerConfigurerAdapter, we must explicitly assert other configuration that
@@ -76,15 +79,15 @@ public class AuthServerJwtConfig extends AuthorizationServerConfigurerAdapter {
     }
 
     /**
-     * These settings override the properties set in the application.yml
-     *  - really DO need all of these settings in this example
-     *  - when using authorization_code and similar (other than user/pw) grants, the authorities defined here
-     *    appear to be implicitly assigned upon successful auth; these authorities are submitted to the
-     *    AuthorizationServerSecurityConfigurer.configure() security definitions above if the matchers are set up
-     *    to be that restrictive.  These are separate from the authorities assigned by the auth manager.
-     *    When user/password grant flow is used, the authorities usage may be different (?)
-     *  - the secret is required for authorization_code grants (not visible in browser debugging), but must
-     *    match the gateway's client secret
+     *  Note that the authorities defined here are implicitly assigned upon successful auth for the grant
+     *  (and for the client_credentials direct token request)
+     *  In the AuthorizationServerSecurityConfigurer.configure() security definitions above, if you so wish,
+     *  those endpoints can be protected based on the authorities assigned here.
+     *  Question: How do these authorities line up with the authorities assigned by a real UserDetails provider?
+     *  i.e. when real authentication and assigned authorities are in play?
+     *  One clue is: when the Jwt gets built, the Jwt does not include the authorities defined here,
+     *  suggesting that perhaps these ONLY apply to the grant approval?
+     *
      * @param clients
      * @throws Exception
      */

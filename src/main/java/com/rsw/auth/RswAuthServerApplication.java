@@ -14,9 +14,9 @@ import org.springframework.boot.autoconfigure.session.SessionAutoConfiguration;
  * Goal is to not use Redis and Spring Session when running locally - use only in cloud profile
  */
 @SpringBootApplication(exclude = SessionAutoConfiguration.class)
-public class AuthServerApplication {
+public class RswAuthServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AuthServerApplication.class, args);
+		SpringApplication.run(RswAuthServerApplication.class, args);
 	}
 }

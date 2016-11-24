@@ -19,7 +19,7 @@ security:
     client:
       client-id: rsw
       client-secret: rswsecret
-      scope: read,write,blue
+      scope: read,write
       auto-approve-scopes: '.*'
 #      authorized-grant-types: authorization_code,client_credentials,refresh_token
       authorities: USER, ADMIN
