@@ -29,17 +29,18 @@ public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter 
     /**
      * The tokenKeyAccess permission (TokenKeyEndpoint) probably isn't pertinent for oauth2 tokens - only
      * JWTs which use a protected key for signing.  This is the /oauth/token_key endpoint.
-     * The checkTokenAccess permission (CheckTokenEndpoint) MAY be pertinent to both oauth2 and Jwt types of tokens,
-     * whenever the client wants to validate the token using /oauth/check_token endpoint.
+     * The checkTokenAccess permission (CheckTokenEndpoint) IS pertinent to both oauth2 and Jwt types of tokens,
+     * if the client wants to validate the token using /oauth/check_token endpoint.
+     * The permission for both of these endpoints is denyAll() by default, so must be configured here if needed.
      *
      * @param oauthServer
      * @throws Exception
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-//        oauthServer
+        oauthServer
 //                .tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_TRUSTED_CLIENT')")
-//                .checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
+                .checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
     }
 
     /**
@@ -56,12 +57,19 @@ public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter 
     }
 
     /**
-     *  Note that the authorities defined here are implicitly assigned upon successful auth for the grant
-     *  (and for the client_credentials direct token request)
+     *  The authorities defined here are implicitly assigned upon successful auth of the _client_ for a token request.
+     *  These authorities are assigned to the OAuth2 _client_, which must provide its own
+     *  "authentication" when making token requests.  So these authorities are not to be confused with the
+     *  actual resource owner's authorities, which are determined by an auth manager, implemented in Spring or elsewhere.
+     *  The resource owner's authorities are revealed by either /oauth/check_access (built into Spring), or via the
+     *  endpoint configured for the Spring client.resource.userInfoUri property (which may be a 3rd party endpoint).
+     *
      *  In the AuthorizationServerSecurityConfigurer.configure() security definitions above, if you so wish,
-     *  those endpoints can be protected based on the authorities assigned here.
-     *  Question: How do these authorities line up with the authorities assigned by a real UserDetails provider?
-     *  i.e. when real authentication and assigned authorities are in play?
+     *  the endpoints there can be protected based on the authorities assigned here.
+     *  Beyond that, it's not clear what other purpose the client authorities serve at least in simple implementations.
+     *
+     *  Note regarding the refresh_token grant type: it appears Spring only produces a refresh_token for the
+     *  authorization_code and password grants.
      *
      * @param clients
      * @throws Exception
@@ -71,7 +79,7 @@ public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter 
         clients.inMemory()
                 .withClient("rsw")
                 .secret("rswsecret")
-                .authorizedGrantTypes("authorization_code","implicit","client_credentials","refresh_token")
+                .authorizedGrantTypes("authorization_code","implicit","password", "client_credentials","refresh_token")
                 .scopes("read", "write")
                 .autoApprove("read","write")
                 .authorities("ROLE_USER", "ROLE_DUMMY", "ROLE_TRUSTED_CLIENT");
