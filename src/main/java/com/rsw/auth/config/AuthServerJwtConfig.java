@@ -40,6 +40,7 @@ public class AuthServerJwtConfig extends AuthorizationServerConfigurerAdapter {
 
     /**
      * this is important: defines access the /oauth/token and check_access endpoints which default to denyAll()
+     *   (in this example it's more restrictive and requires an authority)
      * @param oauthServer
      * @throws Exception
      */
@@ -79,9 +80,9 @@ public class AuthServerJwtConfig extends AuthorizationServerConfigurerAdapter {
      *  - really DO need all of these settings in this example
      *  - when using authorization_code and similar (other than user/pw) grants, the authorities defined here
      *    appear to be implicitly assigned upon successful auth; these authorities are submitted to the
-     *    AuthorizationServerSecurityConfigurer.configure() security definitions above.  These are (maybe) separate from
-     *    the authorities assigned by the auth manager.  When user/password grant flow is used, the authorities
-     *    usage may be different (?)
+     *    AuthorizationServerSecurityConfigurer.configure() security definitions above if the matchers are set up
+     *    to be that restrictive.  These are separate from the authorities assigned by the auth manager.
+     *    When user/password grant flow is used, the authorities usage may be different (?)
      *  - the secret is required for authorization_code grants (not visible in browser debugging), but must
      *    match the gateway's client secret
      * @param clients

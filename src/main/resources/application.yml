@@ -12,17 +12,17 @@ gateway:
 
 logging:
   level:
-    org.springframework.security: info
+    org.springframework.security: debug
 
 security:
   oauth2:
     client:
       client-id: rsw
       client-secret: rswsecret
-      scope: read,write
+      scope: read,write,blue
       auto-approve-scopes: '.*'
-      authorized-grant-types: implicit,authorization_code,client_credentials
-#      authorized-grant-types: implicit
+#      authorized-grant-types: authorization_code,client_credentials,refresh_token
+      authorities: USER, ADMIN
   basic:
     enabled: false
   sessions: stateless
