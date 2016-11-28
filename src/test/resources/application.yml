@@ -40,10 +40,10 @@ rsw:
   security:
     jwt:
       signingKey: abracadabra
-    # pattern requires at least one of each: lowercase, uppercase, digit and special char, min 6 max 15
+    # pattern requires at least one of each: lowercase, uppercase, digit and special char, min 5 max 11
     auth:
       password:
-        pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^\-_+=])[a-zA-Z0-9!@#$%\^\-_+=]{6,15}$
-        expireDays: 90
-        recycleSpan: 5
+        pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^\-_+=])[a-zA-Z0-9!@#$%\^\-_+=]{5,11}$
+        expireDays: 2
+        recycleSpan: 4
 

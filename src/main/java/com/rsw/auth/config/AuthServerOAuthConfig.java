@@ -1,6 +1,7 @@
 package com.rsw.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
+    @Qualifier("rswAuthenticationManager")
     private AuthenticationManager authenticationManager;
 
     /**
@@ -59,8 +61,9 @@ public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter 
     /**
      *  The authorities defined here are implicitly assigned upon successful auth of the _client_ for a token request.
      *  These authorities are assigned to the OAuth2 _client_, which must provide its own
-     *  "authentication" when making token requests.  So these authorities are not to be confused with the
-     *  actual resource owner's authorities, which are determined by an auth manager, implemented in Spring or elsewhere.
+     *  "authentication" when making token requests.  These authorities are not to be confused with the actual
+     *  resource owner's authorities managed by the Spring Security authentication provider whether built-in or custom.
+     *
      *  The resource owner's authorities are revealed by either /oauth/check_access (built into Spring), or via the
      *  endpoint configured for the Spring client.resource.userInfoUri property (which may be a 3rd party endpoint).
      *

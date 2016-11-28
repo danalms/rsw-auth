@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.1.RELEASE'
+		springBootVersion = '1.4.2.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -55,10 +55,13 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-data-redis')
     compile('org.springframework.session:spring-session')
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile group: 'org.postgresql', name: 'postgresql', version: '9.4.1212'
     compile('org.webjars:angularjs:1.4.3')
     compile('org.webjars:jquery:2.1.1')
     compile('org.webjars:bootstrap:3.2.0')
     compile('org.webjars:webjars-locator')
+    testCompile('org.springframework.security:spring-security-test')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
