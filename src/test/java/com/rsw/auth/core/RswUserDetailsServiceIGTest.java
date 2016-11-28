@@ -100,50 +100,6 @@ public class RswUserDetailsServiceIGTest {
         userDetailsService.authenticate(user.getUsername(), updatedUser.getNewPassword());
     }
 
-	@Test
-	public void updateUser() throws Exception {
-//        RswUser user = getUser("joetest", "MyP@ssw0rd1", RswGroup.SYSTEM_ADMIN);
-//		userDetailsService.createUser(user);
-//
-//        RswUser puser = getPersistedUser(user.getUsername());
-//        String oldPassCode = puser.getPassword();
-//
-//		RswUser updUser = new RswUser(user.getUsername(), "",
-//				false, false, false, false, new ArrayList<GrantedAuthority>());
-//        updUser.getGroups().add(RswGroup.PromoterRegistrar.name());
-//
-//        Date now = new Date();
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(now);
-//        cal.add(Calendar.DATE, 29);
-//
-//        // update to set account locked and disabled and change the group but don't change password
-//        userDetailsService.updateUser(updUser);
-//        puser = getPersistedUser(user.getUsername());
-//        assertTrue(puser.getPassword().equals(oldPassCode));
-//        assertFalse(puser.isAccountNonLocked());
-//        assertFalse(puser.isEnabled());
-//
-////        assertTrue(puser.getPasswordExpiry().after(cal.getTime()));
-//        assertTrue(puser.getGroups().size() == 1);
-//        assertTrue(puser.getGroups().get(0).equals(RswGroup.PromoterRegistrar.name()));
-//
-//        // update to set new password but not change groups, unlock user, and set password expiry to now
-//		updUser = new RswUser(user.getUsername(), "Mypassword3#",
-//				true, false, false, true, new ArrayList<GrantedAuthority>());
-//        updUser.setPasswordExpiry(Optional.of(now));
-//        userDetailsService.updateUser(updUser);
-//        puser = getPersistedUser(user.getUsername());
-//        assertFalse(puser.getPassword().equals(oldPassCode));
-//        assertTrue(puser.isAccountNonLocked());
-//        assertTrue(puser.isEnabled());
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        assertTrue(puser.getPasswordExpiry().isPresent());
-//		assertEquals(df.format(puser.getPasswordExpiry().get()), df.format(now));
-//        assertTrue(puser.getGroups().size() == 1);
-//        assertTrue(puser.getGroups().get(0).equals(RswGroup.PromoterRegistrar.name()));
-	}
-
 	@Test(expected = AuthenticationException.class)
 	public void changePassword_authFail() throws Exception {
         RswUser user = getUser("joetest", "MyP@ssw0rd1", RswGroup.SYSTEM_ADMIN);
