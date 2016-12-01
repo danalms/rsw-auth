@@ -98,7 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    UserDetailsService rswUserService() throws Exception {
+    RswUserDetailsService rswUserService() throws Exception {
         RswUserDetailsService userDetailsService = new RswUserDetailsService();
         userDetailsService.setDataSource(dataSource);
         userDetailsService.setPasswordService(passwordService());

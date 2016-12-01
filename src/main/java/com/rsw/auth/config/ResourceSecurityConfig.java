@@ -9,14 +9,17 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 /**
  * Created by DAlms on 10/22/16.
  *
- * Protect ResourceServer resources endpoint as needed.
- * By default, all /oauth URIs are protected
- * Other resources are protected by the Web security configuration
+ * ResourceServer resources are secured here.  URIs matched here will require an OAuth2 token just as the
+ * the API endpoints fronted by the gateway do.
+ * The login form and Web security (WebSecurityConfig) is not invoked automatically for these requests.
+ * Web security (login form) is invoked only for OAuth2 grant requests and other endpoints matched in the Web
+ * security configuration.
  *
- * This endpoint is really only pertinent for OAuth2 (non-JWT) tokens, where clients invoke the
- * URL configured by security.oauth2.resource.userInfoUri to get user details corresponding to an authenticated token
- * Only in that scenario does the Auth Server need to provide a Resource Server function.
- * (and of course the Resource Server function doesn't _have_ to be in the same server as the Auth Server)
+ * The /user URI is only pertinent for OAuth2 (non-JWT) tokens, where clients invoke the URL configured by
+ * security.oauth2.resource.userInfoUri to get user details corresponding to an authenticated token
+ * In this example, this is the only resource being hosted by the auth server (acting as both auth and resource servers)
+ * Of course the Resource Server function doesn't _have_ to be in the same server as the Auth Server)
+ *
  */
 @Configuration
 @ConditionalOnProperty(value = "gateway.demo.tokenType", havingValue = "oauth2")
