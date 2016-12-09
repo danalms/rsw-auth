@@ -3,7 +3,10 @@ buildscript {
 		springBootVersion = '1.4.2.RELEASE'
 	}
 	repositories {
-		mavenCentral()
+//		mavenCentral()
+        maven {
+            url "${nexusUrl}/repository/maven-public"
+        }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -13,7 +16,11 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
+apply plugin: 'maven'
 apply plugin: 'docker'
+
+group = 'com.rsw'
+version = '0.0.1'
 
 jar {
 	baseName = 'rsw-auth'
@@ -31,9 +38,13 @@ docker {
 //    apiEmail 'mail@abc.com'
 }
 
+// tag can be set to a fully-qualified registry path + image name + version (v1)
+// applicationName can be set to just the base name, e.g. rsw-auth + version (v1)
 task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    tag = "gcr.io/inspired-nomad-149920/rsw-auth"
+    push = true
+//    tag = "gcr.io/inspired-nomad-149920/rsw-auth"
+    applicationName = jar.baseName
+    tag = "rsw-auth"
     tagVersion = "v1"
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
@@ -45,7 +56,23 @@ task buildDocker(type: Docker, dependsOn: build) {
 }
 
 repositories {
-	mavenCentral()
+//	mavenCentral()
+    maven {
+        url "${nexusUrl}/repository/maven-public"
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${nexusUrl}/repository/maven-releases/") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            snapshotRepository(url: "${nexusUrl}/repository/maven-snapshots") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+        }
+    }
 }
 
 dependencies {
