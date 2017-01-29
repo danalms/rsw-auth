@@ -5,17 +5,11 @@ spring:
   application:
     name: rsw-auth
   datasource:
-    url: jdbc:postgresql://localhost:5432/authdb
+    url: jdbc:postgresql://localhost:5432/authdb?currentSchema=spring
     username: auth_server_user
     password: s0ho-shenanigan
     type: org.apache.tomcat.jdbc.pool.DataSource
     platform: postgres
-
-
-gateway:
-  demo:
-    tokenType: oauth2
-#    tokenType: jwt
 
 logging:
   level:
@@ -24,10 +18,10 @@ logging:
 security:
   oauth2:
     client:
-      client-id: rsw
-      client-secret: rswsecret
+      clientId: rsw
+      clientSecret: rswsecret
       scope: read,write
-      auto-approve-scopes: '.*'
+      autoApproveScopes: '.*'
 #      authorized-grant-types: authorization_code,client_credentials,refresh_token
       authorities: USER, ADMIN
   basic:
@@ -36,14 +30,15 @@ security:
   user:
     password: password
 
-rsw:
+auth:
   security:
     jwt:
       signingKey: abracadabra
+      validityDurationSecs: 3600
     # pattern requires at least one of each: lowercase, uppercase, digit and special char, min 6 max 15
-    auth:
-      password:
-        pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^\-_+=])[a-zA-Z0-9!@#$%\^\-_+=]{6,15}$
-        expireDays: 90
-        recycleSpan: 5
-
+    password:
+      pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^\-_+=])[a-zA-Z0-9!@#$%\^\-_+=]{6,15}$
+      expireDays: 90
+      recycleSpan: 5
+#  tokenType: oauth2
+  tokenType: jwt

@@ -9,6 +9,6 @@ package com.rsw.auth.domain;
  */
 public enum RswGroup {
     API_USER,
-    PRODUCT_ADMIN,
+    API_ADMIN,
     SYSTEM_ADMIN
 }

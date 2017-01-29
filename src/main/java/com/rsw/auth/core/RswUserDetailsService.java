@@ -36,39 +36,39 @@ public class RswUserDetailsService extends JdbcDaoImpl {
     private static final String DEF_SELECT_USERS_BASE =
             "select u.username, u.password, u.first_name, u.middle_initial, u.last_name, u.email_address, " +
                 " u.mobile_number, u.enabled, u.locked, u.password_expiry " +
-                " from spring.users u ";
+                " from users u ";
     private static final String DEF_SEARCH_USERS_QUERY = DEF_SELECT_USERS_BASE +
                 " where u.last_name LIKE ? " +
                 " order by u.last_name";
     static final String DEF_USERS_BY_USERNAME_QUERY = DEF_SELECT_USERS_BASE +
                 " where u.username = ?";
     private static final String DEF_USER_EXISTS_SQL =
-            "select username from spring.users where username = ?";
+            "select username from users where username = ?";
 
     private static final String DEF_USER_AUTHORITIES_BY_USERNAME_QUERY =
             "select distinct a.authority " +
-                    " from spring.authorities a " +
+                    " from authorities a " +
                     " where a.username = ? ";
     private static final String DEF_GROUP_AUTHORITIES_BY_USERNAME_QUERY =
             "select distinct ga.authority " +
-                    " from spring.groups g " +
-                    " join spring.group_members gm on g.id = gm.group_id " +
-                    " join spring.group_authorities ga on g.id = ga.group_id " +
+                    " from groups g " +
+                    " join group_members gm on g.id = gm.group_id " +
+                    " join group_authorities ga on g.id = ga.group_id " +
                     " where gm.username = ? ";
     static final String DEF_GROUPNAMES_BY_USERNAME_QUERY =
             "select distinct g.group_name " +
-                    " from spring.groups g " +
-                    " join spring.group_members gm on g.id = gm.group_id " +
+                    " from groups g " +
+                    " join group_members gm on g.id = gm.group_id " +
                     " where gm.username = ? ";
 
     private static final String DEF_CREATE_USER_SQL =
-            "insert into spring.users " +
+            "insert into users " +
                 "(username, password, enabled, locked, password_expiry, " +
                 " first_name, middle_initial, last_name, email_address, mobile_number) " +
                 "values (?,?,?,?,?,?,?,?,?,?)";
 
     private static final String DEF_UPDATE_PROFILE_BASE =
-            "update spring.users set " +
+            "update users set " +
                 " first_name = ? , " +
                 " middle_initial = ? ," +
                 " last_name = ? ," +
@@ -86,25 +86,25 @@ public class RswUserDetailsService extends JdbcDaoImpl {
                 " where username = ?";
 
     private static final String DEF_FIND_GROUP_ID_SQL =
-            "select id from spring.groups where group_name = ?";
+            "select id from groups where group_name = ?";
 
     private static final String DEF_GET_ALL_GROUPS_SQL =
-            "select g.group_name from spring.groups g";
+            "select g.group_name from groups g";
 
     private static final String DEF_INSERT_AUTHORITY_SQL =
-            "insert into spring.authorities (username, authority) values (?,?)";
+            "insert into authorities (username, authority) values (?,?)";
 
     private static final String DEF_INSERT_GROUP_MEMBER_SQL =
-            "insert into spring.group_members (group_id, username) values (?,?)";
+            "insert into group_members (group_id, username) values (?,?)";
 
     private static final String DEF_DELETE_AUTHORITIES_SQL =
-            "delete from spring.authorities where username = ?";
+            "delete from authorities where username = ?";
 
     private static final String DEF_DELETE_GROUP_MEMBER_SQL =
-            "delete from spring.group_members where username = ?";
+            "delete from group_members where username = ?";
 
     private static final String DEF_DELETE_USERS_SQL =
-            "delete from spring.users where username = ?";
+            "delete from users where username = ?";
 
     /**
      * not used by Spring Security, and does not load groups or authorities - strictly for an admin list view of users

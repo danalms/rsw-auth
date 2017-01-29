@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -41,11 +42,11 @@ import javax.sql.DataSource;
 @Order(6)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${rsw.security.auth.password.pattern}")
+    @Value("${auth.security.password.pattern}")
     private String passwordPattern;
-    @Value("${rsw.security.auth.password.expireDays}")
+    @Value("${auth.security.password.expireDays}")
     private Integer passwordExpireDays;
-    @Value("${rsw.security.auth.password.recycleSpan}")
+    @Value("${auth.security.password.recycleSpan}")
     private Integer passwordRecycleSpan;
 
     @Autowired
@@ -75,6 +76,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * TODO: use NamedParameterJdbcTemplate
+     * @return
+     * @throws Exception
+     */
     @Bean(name = "rswJdbcTemplate")
     public JdbcTemplate rswJdbcTemplate() throws Exception {
         return new JdbcTemplate(dataSource);
@@ -82,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean(name = "rswPasswordEncoder")
     PasswordEncoder rswPasswordEncoder() {
-        return new StandardPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     @Bean

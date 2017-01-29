@@ -22,7 +22,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
  *
  */
 @Configuration
-@ConditionalOnProperty(value = "gateway.demo.tokenType", havingValue = "oauth2")
+@ConditionalOnProperty(value = "auth.tokenType", havingValue = "oauth2")
 @EnableResourceServer
 public class ResourceSecurityConfig extends ResourceServerConfigurerAdapter {
 

@@ -41,19 +41,19 @@ public class PasswordService {
     private Pattern passwordPattern;
 
     private static final String DEF_CHANGE_PASSWORD_SQL =
-            "update spring.users set password = ?, password_expiry = ? where username = ?";
+            "update users set password = ?, password_expiry = ? where username = ?";
 
     private static final String DEF_FIND_PASSWORD_HISTORY_SQL =
-            "select password from spring.password_history where username = ? order by changed_date DESC";
+            "select password from password_history where username = ? order by changed_date DESC";
 
     private static final String DEF_INSERT_PASSWORD_HISTORY_SQL =
-            "insert into spring.password_history (username, password, changed_date) values(?,?,?)";
+            "insert into password_history (username, password, changed_date) values(?,?,?)";
 
     private static final String DEF_DELETE_PASSWORD_HISTORY_SQL =
-            "delete from spring.password_history where username = ?";
+            "delete from password_history where username = ?";
 
     private static final String DEF_DELETE_PERSISTENT_LOGINS_SQL =
-            "delete from spring.persistent_logins where username = ?";
+            "delete from persistent_logins where username = ?";
 
 
     @PostConstruct

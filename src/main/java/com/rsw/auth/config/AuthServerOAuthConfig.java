@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
  *
  */
 @Configuration
-@ConditionalOnProperty(value = "gateway.demo.tokenType", havingValue = "oauth2")
+@ConditionalOnProperty(value = "auth.tokenType", havingValue = "oauth2")
 public class AuthServerOAuthConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired

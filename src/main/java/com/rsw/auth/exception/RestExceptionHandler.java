@@ -1,4 +1,4 @@
-package com.rsw.auth.controller;
+package com.rsw.auth.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
