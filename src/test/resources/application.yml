@@ -18,10 +18,10 @@ logging:
 security:
   oauth2:
     client:
-      client-id: rsw
-      client-secret: rswsecret
+      clientId: rsw
+      clientSecret: rswsecret
       scope: read,write
-      auto-approve-scopes: '.*'
+      autoApproveScopes: '.*'
 #      authorized-grant-types: authorization_code,client_credentials,refresh_token
       authorities: USER, ADMIN
   basic:
@@ -34,6 +34,7 @@ auth:
   security:
     jwt:
       signingKey: abracadabra
+      validityDurationSecs: 3600
     # pattern requires at least one of each: lowercase, uppercase, digit and special char, min 5 max 11
     password:
       pattern: ^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^\-_+=])[a-zA-Z0-9!@#$%\^\-_+=]{5,11}$
