@@ -42,6 +42,7 @@ docker {
 // applicationName can be set to just the base name, e.g. rsw-auth + version (v1)
 task buildDocker(type: Docker, dependsOn: build) {
     push = true
+    // miniserver.local : Nexus hosted docker registry
     tag = "10.0.1.9:8082/rsw-auth"
     tagVersion = "v1"
     dockerfile = file('src/main/docker/Dockerfile')
