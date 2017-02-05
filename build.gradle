@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.2.RELEASE'
+		springBootVersion = '1.5.1.RELEASE'
 	}
 	repositories {
 //		mavenCentral()
@@ -15,7 +15,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'maven'
 apply plugin: 'docker'
 
@@ -93,6 +93,6 @@ dependencies {
 
 dependencyManagement {
 	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Camden.RELEASE"
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Camden.SR4"
 	}
 }

@@ -24,6 +24,9 @@ security:
       autoApproveScopes: '.*'
 #      authorized-grant-types: authorization_code,client_credentials,refresh_token
       authorities: USER, ADMIN
+# oauth2 resource server filter order changed to -1 in Spring Boot 1.5; setting back to previous working order
+    resource:
+      filterOrder: 3
   basic:
     enabled: false
   sessions: stateless
