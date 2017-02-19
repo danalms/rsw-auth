@@ -24,6 +24,7 @@ public class JwtTokenEnhancer implements TokenEnhancer {
         RswUser rswPrincipal = (RswUser) authentication.getPrincipal();
         Map<String, Object> additionalInfo = new HashMap<>();
 
+        additionalInfo.put("username", rswPrincipal.getUsername());
         additionalInfo.put("firstname", rswPrincipal.getFirstName());
         additionalInfo.put("lastname", rswPrincipal.getLastName());
         additionalInfo.put("email", rswPrincipal.getEmailAddress());
