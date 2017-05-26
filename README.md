@@ -1,18 +1,18 @@
-# auth-server-demo
+# rsw-auth
 
-Example of a minimally configured OAuth2 Authorization Server as implemented by Spring Security with Spring Boot
+Example of a PostgreSQL-backed OAuth2 Authorization Server as implemented by Spring Security with Spring Boot
 
-There are two alternate configurations, enabled by the **gateway.demo.tokenType** property: *jwt* or *oauth2*, which
+There are two alternate configurations, enabled by the **auth.tokenType** property: *jwt* or *oauth2*, which
 demonstrates either returning JWT tokens ("by value") or OAuth2 tokens ("by reference")
 
-A working client of this server is found in the *gateway-demo* repo (a Zuul gateway) and the *product-api-demo* repo,
-(a micro service proxied by the gateway/Zuul server).
-See [gateway-demo](https://github.com/danalms/gateway-demo/blob/master/README.md) for gateway details
+A working client of this server is found in the *rsw-gateway* repo, a Zuul gateway, and the *rsw-product* repo,
+a micro service proxied by the gateway/Zuul server.
+See [rsw-gateway](https://github.com/danalms/rsw-gateway/blob/master/README.md) for gateway details
 
 This AuthServer example has a built-in login form invoked on /oauth/authorize prior to granting an OAuth token
 
-For demonstration purposes, the login form authenticates against the Spring Security built-in user account 'user', with a
-password of 'password' (property override of the randomly generated GUID password)
+The login form authenticates against any of the creds setup in the *sql/0003-users-groups-init.sql* script
+This is functional only if a local db is created with the DDL provided in the other scripts in the *sql* folder.
 
 
 *Note about Redis...* 
